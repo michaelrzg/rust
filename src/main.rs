@@ -3,6 +3,20 @@
 // 9/26/24
 mod linkedlist;
 use std::{io::{self, Read}, os::macos::raw::stat};
+fn printlist(ll: &linkedlist::LinkedList){
+    let mut list = ll;
+    print!("HEAD -> ");
+     // set pointer current = head
+    let mut current: Option<i32> = list.head;
+    // parse throgh list while current!=null, and print value
+    while current!= None&& current.unwrap()<= list.nodes.len() as i32 {
+        print!("{}", list.nodes[current.unwrap() as usize].data);
+        print!(" -> ");
+        current = list.nodes[current.unwrap() as usize].next;
+    }
+    print!("END");
+   
+}
 fn main() {
     //string to grab user input
     let mut input = String::new();
@@ -38,16 +52,7 @@ fn main() {
 
                 // print current list values
                 println!("Value inserted successfully, current list contents:");
-                print!("HEAD -> ");
-                // set pointer current = head
-                let mut current = &list.head;
-                // parse throgh list while current!=null, and print value
-                while let Some(node) = current {
-                    print!("{}", node.data);
-                    print!(" -> ");
-                    current = &node.next;
-                }
-                print!("END");
+                printlist(&list);
                 // reset input string
                 input=String::new();
             }
@@ -61,18 +66,8 @@ fn main() {
                 let intvalue:i32 = value.trim().parse().expect("Invalid value. Please enter an integer!");
                 
                 // attempt to delete this value from list:
-                let status = list.delete(intvalue);
-                if status{
-                    println!("Deleted Succesfully. Current list: ");
-                    print!("HEAD -> ");
-                    let mut current = &list.head;
-                    while let Some(node) = current{
-                        print!("{}", node.data);
-                        print!(" -> ");
-                        current = &node.next;
-                    }
-                    print!("END");
-                }
+                list.delete(intvalue);
+                printlist(&list);
                 input = String::new();
             
             }
